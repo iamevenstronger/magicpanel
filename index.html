@@ -1,0 +1,107 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Evenstronger web tutorials">
+  <meta name="keywords" content="HTML,CSS,XML,JavaScript,nodejs,magic panel,magic board,magic paper,evenstronger,mind reader">
+  <meta name="author" content="Evenstronger">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Panel</title>
+<style>
+table {
+    width: 40%;
+}
+td {
+width: 6%;
+text-align: center;
+height: 6%;
+background-color: #f4fdff;
+color: #515151;
+padding: 0px;
+border-radius: 12px;
+border: 1px solid #9e9e9e;
+}
+.btn {
+border: 0px;
+background: #fff;
+width: 90px;
+font-size: 20pt;
+border: 1px solid #d8d8d8;
+color: #656565;
+border-radius: 5px;
+}
+.btn:active {
+    border: 0px;
+}
+</style>
+</head>
+<body>
+ <div id="ins" style="margin: auto;width: 50%;display: block;background-color: #f5fcff;padding: 30px;border: 1px solid whitesmoke;border-radius: 4px;font-size: 35pt;">
+    <div id="context">
+    </div>
+    <button onclick="backward()" class="btn">Back</button>
+    <button id="fstate" onclick="forward()" class="btn">Next</button>
+ </div>
+ <table id="art" style="display: none;" align="center">
+ </table>
+ <script>
+    var contextIndex = 0 ;
+    var contextArray = [
+        "choose any two digit number ( eg. 45 )",
+        "add those two number ( eg. 4 + 5 = 9 ) keep remind the result",
+        "subtract the result to the two digit number, you choosen before( eg. 45 - 9 = 36 )",
+        "Keep final result in mind for final step!"
+    ];
+    document.getElementById("context").innerText = contextArray[contextIndex];
+    var alphabet = "abcdefghijklmnopqrstuvwxyz";
+    var r = alphabet[Math.floor(Math.random() * alphabet.length)] ;
+    function forward() {
+        if(contextIndex+1 >= 4) {
+            contextIndex++;
+            switchB();
+        } else if(contextIndex+1 < 4){
+            contextIndex++;
+            if(contextIndex==3) {
+                document.getElementById("fstate").innerText = "Finish" ;
+            }
+        }
+        document.getElementById("context").innerText = contextArray[contextIndex];
+    }
+    function backward() {
+        if(contextIndex-1 > -1){
+            contextIndex--;
+            if(contextIndex==2) {
+                document.getElementById("fstate").innerText = "Next" ;
+            }
+        }
+        document.getElementById("context").innerText = contextArray[contextIndex];
+    }
+    function generate() {
+        var html = "";
+        html = html + "<tr><td colspan='10'><div style='padding: 10px;''><span style='font-size: 15pt;font-weight: bold;'>Remind the Alphabet of your result number and click the below button!</span><button class='btn' onclick='result()' style='width: 26%;'>show result</button></div></td></tr>" ;
+        for(var i = 0 ; i < 10 ; i++) {
+            html = html + "<tr>" ;
+            for(var j = 1 ; j <= 10 ; j++) {
+                var index = j + ( i * 10 ) ;
+                console.log(index);
+                if( (index%9) == 0) {
+                    html = html + "<td><h1>" + r + "</h1><h4>" + index + "</h4></td>" ;
+                } else {
+                    html = html + "<td><h1>" + alphabet[Math.floor(Math.random() * alphabet.length)] + "</h1><h4>" + index + "</h4></td>" ;
+                }
+            }
+            html = html + "</tr>" ;
+        }
+        document.getElementById("art").innerHTML = html ;
+    }
+    function switchB() {
+        document.getElementById("ins").style.display = "none" ;
+        document.getElementById("art").style.display = "block" ;
+        generate();
+    }
+    function result() {
+        var rr = "<h1 style='display: block;margin: auto;width: 2%;font-size: 100pt;padding: 60px;background: #f5fdff;border: 1px solid #cfcfcf;border-radius: 4px;'>" + r + "</h1>";
+        document.body.innerHTML = rr;
+    }
+ </script>
+</body>
+</html>
